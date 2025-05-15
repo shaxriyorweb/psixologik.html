@@ -1,0 +1,415 @@
+// Savollar bazasi
+const testQuestions = [
+    { question: "Do‘stlaringiz bilan bo‘lishish siz uchun qanchalik muhim?", options: ["A. Juda muhim", "B. O‘rtacha", "C. Kamdan-kam"] },
+    { question: "Yangi odamlar bilan tanishish sizga yoqadimi?", options: ["A. Ha, juda yoqadi", "B. Vaziyatga qarab", "C. Unchalik emas"] },
+    { question: "Ishni yakunlash siz uchun qanchalik muhim?", options: ["A. Har doim tugataman", "B. Ba'zida tugataman", "C. Ko‘p holatda yarim yo‘lda qoldiraman"] },
+    { question: "Stressli vaziyatlarda qanday harakat qilasiz?", options: ["A. Hissiyotimni ifodalayman", "B. Ichimga yutaman", "C. Maslahatlasha boshlayman"] },
+    { question: "Yolg‘izlik sizga qanday ta’sir qiladi?", options: ["A. Tinchlik beradi", "B. Ko‘nikkanman", "C. Bezovta qiladi"] },
+    { question: "Yangi topshiriqlarni bajarishda siz qanday harakat qilasiz?", options: ["A. Darhol kirishaman", "B. O‘ylab ko‘rib kirishaman", "C. Kechiktiraman"] },
+    { question: "Do‘stlaringiz sizni qanday ta’riflaydi?", options: ["A. Ochiq va ijtimoiy", "B. Tinch va xotirjam", "C. Fikrlovchi va mustaqil"] },
+    { question: "Muammoga duch kelsangiz, nima qilasiz?", options: ["A. Boshqalardan yordam so‘rayman", "B. Mustaqil hal qilaman", "C. Vaziyatga qarab"] },
+    { question: "Dam olish kunlaringizni qanday o‘tkazasiz?", options: ["A. Do‘stlar bilan", "B. Oila davrasida", "C. Yolg‘iz kitob o‘qib"] },
+    { question: "O‘zingizga bo‘lgan ishonchingiz qanchalik yuqori?", options: ["A. Yuqori", "B. O‘rtacha", "C. Kam"] },
+    { question: "Hayotdagi maqsadingiz aniqmi?", options: ["A. Ha, juda aniq", "B. Taxminan bilaman", "C. Hali aniqlamadim"] },
+    { question: "Yutuqlaringizni boshqalar bilan bo‘lishasizmi?", options: ["A. Ha", "B. Ba'zida", "C. Yo‘q"] },
+    { question: "Tanqidni qanday qabul qilasiz?", options: ["A. Ijobiy", "B. Xafa bo‘laman", "C. E’tibor bermayman"] },
+    { question: "Do‘stlaringiz soni qancha?", options: ["A. Juda ko‘p", "B. O‘rtacha", "C. Kam"] },
+    { question: "Yangi ish boshlashdan oldin nima qilasiz?", options: ["A. Rejalashtiraman", "B. Darhol boshlayman", "C. O‘ylab yuraman"] },
+    { question: "Stressni qanday yengasiz?", options: ["A. Sport bilan", "B. Suhbat orqali", "C. Yolg‘izlikda"] },
+    { question: "Siz uchun muhim narsa nima?", options: ["A. Aloqalar", "B. Xavfsizlik", "C. Mustaqillik"] },
+    { question: "Mas'uliyatli vazifalarda o‘zingizni qanday his qilasiz?", options: ["A. Ishonchli", "B. Biroz hayajon", "C. Qiyinchilik bilan"] },
+    { question: "Ijtimoiy tadbirlarda siz...", options: ["A. Markazda bo‘laman", "B. Chekkada turaman", "C. Umuman qatnashmayman"] },
+    { question: "O‘qish va o‘rganishga bo‘lgan munosabatingiz qanday?", options: ["A. Juda ijobiy", "B. Qiziqishga qarab", "C. Majburiyat sifatida"] },
+    { question: "Muammoni boshqalarga aytish sizga osonmi?", options: ["A. Ha", "B. Vaziyatga qarab", "C. Yo‘q"] },
+    { question: "O‘zingizni boshqalarga taqqoslaysizmi?", options: ["A. Kamdan-kam", "B. Ba'zida", "C. Tez-tez"] },
+    { question: "Maqsad sari harakat qanday bo‘ladi?", options: ["A. Rejali", "B. Har xil", "C. Sekin"] },
+    { question: "Ish jarayonida siz...", options: ["A. Hamma bilan ishlay olaman", "B. Tanlanganlar bilan", "C. Yolg‘iz yaxshi ishlayman"] },
+    { question: "Qiyin vaziyatda siz...", options: ["A. Hal qilishga urinaman", "B. Qochaman", "C. Boshqalarga yuklayman"] },
+
+    { question: "Sizning hayotiy qadriyatlaringiz...", options: ["A. Aniq va qat'iy", "B. Vaqtga qarab o‘zgaradi", "C. Hali shakllanmagan"] },
+    { question: "Tashqi ko‘rinishingiz siz uchun...", options: ["A. Muhim", "B. Ortiqcha", "C. E’tibor bermayman"] },
+    { question: "Tuyg‘ularingizni boshqarasizmi?", options: ["A. Ha", "B. Har doim emas", "C. Qiyin"] },
+    { question: "Dushmanlik holatida...", options: ["A. Murosaga boraman", "B. Indamayman", "C. Qarshi chiqaman"] },
+    { question: "Yangi g‘oyalarga ochiqmisiz?", options: ["A. Ha", "B. O‘ylab ko‘raman", "C. Shubha bilan qarayman"] }
+];
+
+// Global o'zgaruvchilar
+let currentQuestion = 0;
+let userAnswers = [];
+let userData = {};
+
+// DOM elementlari
+const startBtn = document.getElementById('start-btn');
+const userForm = document.getElementById('user-form');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const submitBtn = document.getElementById('submit-btn');
+const restartBtn = document.getElementById('restart-btn');
+const adminAccessBtn = document.getElementById('admin-access-btn');
+const adminLoginForm = document.getElementById('admin-form');
+const logoutBtn = document.getElementById('logout-btn');
+
+// Sahifalar
+const pages = {
+    welcome: document.getElementById('welcome-page'),
+    userInfo: document.getElementById('user-info-page'),
+    test: document.getElementById('test-page'),
+    results: document.getElementById('results-page'),
+    adminLogin: document.getElementById('admin-login-page'),
+    adminPanel: document.getElementById('admin-panel')
+};
+
+// Admin menyu tugmalari
+const adminMenuBtns = document.querySelectorAll('.admin-menu-btn');
+const adminSections = document.querySelectorAll('.admin-section');
+
+// Boshlash tugmasi
+startBtn.addEventListener('click', () => {
+    pages.welcome.classList.remove('active');
+    pages.userInfo.classList.add('active');
+});
+
+// Foydalanuvchi ma'lumotlari formasi
+userForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    userData = {
+        name: document.getElementById('name').value,
+        surname: document.getElementById('surname').value,
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        region: document.getElementById('region').value,
+        date: new Date().toISOString()
+    };
+    
+    // Testni boshlash
+    startTest();
+});
+
+// Testni boshlash
+function startTest() {
+    pages.userInfo.classList.remove('active');
+    pages.test.classList.add('active');
+    
+    // Javoblarni tozalash
+    userAnswers = new Array(testQuestions.length).fill(null);
+    
+    // Savollarni aralashtirish
+    shuffleArray(testQuestions);
+    
+    // Birinchi savolni yuklash
+    currentQuestion = 0;
+    loadQuestion();
+}
+
+
+// Savolni yuklash
+function loadQuestion() {
+    const question = testQuestions[currentQuestion];
+    const progress = (currentQuestion + 1) / testQuestions.length * 100;
+    
+    // Progress bar va tekstni yangilash
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+    document.getElementById('progress-text').textContent = `${currentQuestion + 1}/${testQuestions.length}`;
+    
+    // Savol matnini yangilash
+    document.getElementById('question-text').textContent = question.question;
+    
+    // Variantlarni yuklash
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        if (userAnswers[currentQuestion] === option[0]) {
+            optionElement.classList.add('selected');
+        }
+        
+        optionElement.innerHTML = `
+            <input type="radio" name="option" id="option-${index}" value="${option[0]}">
+            <label for="option-${index}">${option}</label>
+        `;
+        
+        optionElement.addEventListener('click', () => {
+            // Barcha variantlardan tanlangan klassini olib tashlash
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Tanlangan variantga klass qo'shish
+            optionElement.classList.add('selected');
+            
+            // Javobni saqlash
+            userAnswers[currentQuestion] = option[0];
+            
+            // Keyingi tugmani faollashtirish
+            if (currentQuestion === testQuestions.length - 1 && userAnswers[currentQuestion] !== null) {
+                submitBtn.style.display = 'block';
+                nextBtn.style.display = 'none';
+            }
+        });
+        
+        optionsContainer.appendChild(optionElement);
+    });
+    
+    // Oldingi tugmani faollashtirish/faolsizlantirish
+    prevBtn.disabled = currentQuestion === 0;
+    
+    // Keyingi tugmani faollashtirish/faolsizlantirish
+    nextBtn.style.display = currentQuestion === testQuestions.length - 1 ? 'none' : 'block';
+    submitBtn.style.display = currentQuestion === testQuestions.length - 1 ? 'block' : 'none';
+}
+
+// Oldingi savol
+prevBtn.addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+    }
+});
+
+// Keyingi savol
+nextBtn.addEventListener('click', () => {
+    if (currentQuestion < testQuestions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    }
+});
+
+// Testni yakunlash
+submitBtn.addEventListener('click', () => {
+    // Barcha savollarga javob berilganligini tekshirish
+    if (userAnswers.some(answer => answer === null)) {
+        alert("Iltimos, barcha savollarga javob bering!");
+        return;
+    }
+    
+    // Natijalarni hisoblash
+    const aCount = userAnswers.filter(answer => answer === 'A').length;
+    const bCount = userAnswers.filter(answer => answer === 'B').length;
+    const cCount = userAnswers.filter(answer => answer === 'C').length;
+    const total = aCount + bCount + cCount;
+    
+    const aPercent = Math.round((aCount / total) * 100);
+    const bPercent = Math.round((bCount / total) * 100);
+    const cPercent = Math.round((cCount / total) * 100);
+    
+    // Natijalarni ko'rsatish
+    showResults(aPercent, bPercent, cPercent);
+});
+
+
+// Natijalarni ko'rsatish
+function showResults(aPercent, bPercent, cPercent) {
+    pages.test.classList.remove('active');
+    pages.results.classList.add('active');
+    
+    // Foydalanuvchi ma'lumotlarini ko'rsatish
+    document.getElementById('result-user-name').textContent = `${userData.name} ${userData.surname}`;
+    document.getElementById('result-user-age').textContent = `${userData.age} yosh`;
+    document.getElementById('result-user-gender').textContent = userData.gender;
+    document.getElementById('result-user-region').textContent = userData.region;
+    
+    // Natijalarni yangilash
+    document.getElementById('a-percent').textContent = `${aPercent}%`;
+    document.getElementById('b-percent').textContent = `${bPercent}%`;
+    document.getElementById('c-percent').textContent = `${cPercent}%`;
+    
+    // Progress barlarni yangilash
+    setTimeout(() => {
+        document.getElementById('a-bar').style.width = `${aPercent}%`;
+        document.getElementById('b-bar').style.width = `${bPercent}%`;
+        document.getElementById('c-bar').style.width = `${cPercent}%`;
+    }, 100);
+    
+    // Tavsiflarni belgilash
+    document.getElementById('a-description').textContent = getDescription('A', aPercent);
+    document.getElementById('b-description').textContent = getDescription('B', bPercent);
+    document.getElementById('c-description').textContent = getDescription('C', cPercent);
+    
+    // Umumiy xulosani belgilash
+    document.getElementById('result-summary').textContent = getSummary(aPercent, bPercent, cPercent);
+    
+    // Natijalarni serverga yuborish
+    saveResults(aPercent, bPercent, cPercent);
+}
+
+// Tavsiflar
+function getDescription(type, percent) {
+    const descriptions = {
+        A: [
+            "Siz ijtimoiy va ochiq odamsiz. Do'stlaringiz bilan vaqt o'tkazish siz uchun muhim.",
+            "Sizda ijtimoiylik fazilati bor, lekin ba'zida yolg'izlikni ham yaxshi ko'rasiz.",
+            "Ijtimoiylik siz uchun unchalik muhim emas. Yolg'iz vaqt siz uchun qimmatli."
+        ],
+        B: [
+            "Siz muvozanatli va xotirjam odamsiz. Har qanday vaziyatga moslasha olasiz.",
+            "Sizda muvozanat bor, lekin ba'zida hissiyotlaringiz ustun keladi.",
+            "Siz asosan xotirjam odamsiz, lekin ba'zida muvozanatni saqlash qiyin bo'ladi."
+        ],
+        C: [
+            "Siz mustaqil va fikrlash qobiliyati yuqori odamsiz. O'z fikrlaringizga amal qilasiz.",
+            "Sizda mustaqillik bor, lekin ba'zida boshqalarning fikri ham muhim bo'ladi.",
+            "Siz ko'proq mustaqil fikrlash odatiga egasiz. Boshqalarga qaraganda o'z yo'lingizdan borasiz."
+        ]
+    };
+    
+    if (percent >= 60) return descriptions[type][0];
+    if (percent >= 30) return descriptions[type][1];
+    return descriptions[type][2];
+}
+
+// Umumiy xulosa
+function getSummary(a, b, c) {
+    const max = Math.max(a, b, c);
+    
+    if (max === a) {
+        return "Siz asosan ijtimoiy va ochiq odamsiz. Do'stlaringiz bilan muloqot siz uchun muhim. Siz yangi odamlar bilan tez tanishasiz va jamoada ishlash sizga yoqadi. Sizning asosiy kuchli tomonlaringiz - muloqot qobiliyati va ijtimoiylik.";
+    } else if (max === b) {
+        return "Siz muvozanatli va xotirjam odamsiz. Har qanday vaziyatga moslasha olasiz. Siz hissiyotlaringizni nazorat qila olasiz va murakkab vaziyatlarda ham sokinligingizni saqlaysiz. Sizning asosiy kuchli tomonlaringiz - bardoshlik va muvozanat.";
+    } else {
+        return "Siz mustaqil va fikrlash qobiliyati yuqori odamsiz. O'z fikrlaringizga amal qilasiz va boshqalarning fikri siz uchun unchalik muhim emas. Siz yolg'iz ishlashni yaxshi ko'rasiz va muammolarni mustaqil hal qilishga intilasiz. Sizning asosiy kuchli tomonlaringiz - mustaqillik va ijodkorlik.";
+    }
+}
+
+// Qayta boshlash
+restartBtn.addEventListener('click', () => {
+    pages.results.classList.remove('active');
+    pages.welcome.classList.add('active');
+    adminAccessBtn.style.display = 'block';
+});
+
+
+// Massivni aralashtirish
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// Admin paneliga kirish
+adminAccessBtn.addEventListener('click', () => {
+    pages.welcome.classList.remove('active');
+    pages.userInfo.classList.remove('active');
+    pages.test.classList.remove('active');
+    pages.results.classList.remove('active');
+    pages.adminLogin.classList.add('active');
+    adminAccessBtn.style.display = 'none';
+});
+
+// Admin kirish formasi
+adminLoginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('admin-username').value;
+    const password = document.getElementById('admin-password').value;
+    
+    // Oddiy autentifikatsiya (aslida bu serverda tekshirilishi kerak)
+    if (username === 'admin' && password === 'admin123') {
+        pages.adminLogin.classList.remove('active');
+        pages.adminPanel.classList.add('active');
+        loadAdminData();
+    } else {
+        alert("Noto'g'ri foydalanuvchi nomi yoki parol!");
+    }
+});
+
+// Admin panelidan chiqish
+logoutBtn.addEventListener('click', () => {
+    pages.adminPanel.classList.remove('active');
+    pages.welcome.classList.add('active');
+    adminAccessBtn.style.display = 'block';
+});
+
+// Admin menyusi
+adminMenuBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Faol menyu elementini o'zgartirish
+        document.querySelector('.admin-menu-btn.active').classList.remove('active');
+        btn.classList.add('active');
+        
+        // Tegishli bo'limni ko'rsatish
+        const sectionId = btn.dataset.section + '-section';
+        document.querySelector('.admin-section.active').classList.remove('active');
+        document.getElementById(sectionId).classList.add('active');
+    });
+});
+
+// Admin ma'lumotlarini yuklash
+function loadAdminData() {
+    // Bu yerda serverdan ma'lumotlarni yuklash bo'lishi kerak
+    // Biz mock ma'lumotlar bilan ishlaymiz
+    
+    // Umumiy statistikalar
+    document.getElementById('total-users-count').textContent = "125";
+    document.getElementById('total-tests-count').textContent = "342";
+    document.getElementById('total-regions-count').textContent = "12";
+    
+    // Oxirgi test natijalari
+    const recentResults = [
+        { name: "Ali", surname: "Valiyev", age: 22, region: "Toshkent", a: 45, b: 30, c: 25, date: "2023-05-15" },
+        { name: "Gulnora", surname: "Rasulova", age: 19, region: "Samarqand", a: 30, b: 50, c: 20, date: "2023-05-14" },
+        { name: "Javohir", surname: "To'xtayev", age: 24, region: "Andijon", a: 25, b: 40, c: 35, date: "2023-05-14" },
+        { name: "Dilfuza", surname: "Qodirova", age: 20, region: "Farg'ona", a: 60, b: 20, c: 20, date: "2023-05-13" },
+        { name: "Sarvar", surname: "Nazarov", age: 21, region: "Namangan", a: 15, b: 25, c: 60, date: "2023-05-12" }
+    ];
+    
+    const recentTable = document.querySelector('#recent-results-table tbody');
+    recentTable.innerHTML = '';
+    
+    recentResults.forEach(result => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${result.name}</td>
+            <td>${result.surname}</td>
+            <td>${result.age}</td>
+            <td>${result.region}</td>
+            <td>${result.a}%</td>
+            <td>${result.b}%</td>
+            <td>${result.c}%</td>
+            <td>${result.date}</td>
+        `;
+        recentTable.appendChild(row);
+    });
+    
+    // Hududlar filteri
+    const regions = ["Toshkent", "Samarqand", "Andijon", "Farg'ona", "Namangan", "Buxoro", "Navoiy", "Xorazm", "Qashqadaryo", "Surxondaryo", "Jizzax"];
+    const regionFilter = document.getElementById('region-filter');
+    
+    regions.forEach(region => {
+        const option = document.createElement('option');
+        option.value = region;
+        option.textContent = region;
+        regionFilter.appendChild(option);
+    });
+}
+
+
+// Natijalarni serverga yuborish
+function saveResults(aPercent, bPercent, cPercent) {
+    // Bu yerda serverga POST so'rovi yuboriladi
+    // Biz mock funksiya yozamiz
+    console.log("Natijalar saqlandi:", {
+        user: userData,
+        results: {
+            a: aPercent,
+            b: bPercent,
+            c: cPercent
+        }
+    });
+    
+    // Admin panelini yangilash
+    if (pages.adminPanel.classList.contains('active')) {
+        loadAdminData();
+    }
+}
+
+// Dastur yuklanganda
+document.addEventListener('DOMContentLoaded', () => {
+    // Joriy yilni ko'rsatish
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+    // Admin paneliga o'tish tugmasini faqat test yakunlanganda ko'rsatish
+    adminAccessBtn.style.display = 'none';
+});
