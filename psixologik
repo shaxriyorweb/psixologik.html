@@ -1,1 +1,427 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psixologik Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Kirish sahifasi -->
+        <div id="welcome-page" class="page active">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Psixologik Test</h1>
+            </div>
+            <div class="welcome-content">
+                <h2>Shaxsiy fazilatlaringizni aniqlang</h2>
+                <p>30 ta savolga javob berib, o'zingiz haqingizda ko'proq biling</p>
+                <button id="start-btn" class="btn-primary">Testni boshlash</button>
+            </div>
+        </div>
+
+        <!-- Foydalanuvchi ma'lumotlari sahifasi -->
+        <div id="user-info-page" class="page">
+            <div class="logo">
+                <i class="fas fa-user-edit"></i>
+                <h1>Shaxsiy ma'lumotlar</h1>
+            </div>
+            <form id="user-form">
+                <div class="form-group">
+                    <label for="name">Ism</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="surname">Familiya</label>
+                    <input type="text" id="surname" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Yosh</label>
+                    <input type="number" id="age" min="7" max="25" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Jinsi</label>
+                    <select id="gender" required>
+                        <option value="">Tanlang</option>
+                        <option value="Erkak">Erkak</option>
+                        <option value="Ayol">Ayol</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="region">Hudud</label>
+                    <select id="region" required>
+                        <option value="">Tanlang</option>
+                        <option value="Toshkent">Toshkent</option>
+                        <option value="Toshkent viloyati">Toshkent viloyati</option>
+                        <option value="Andijon">Andijon</option>
+                        <option value="Farg'ona">Farg'ona</option>
+                        <option value="Namangan">Namangan</option>
+                        <option value="Samarqand">Samarqand</option>
+                        <option value="Buxoro">Buxoro</option>
+                        <option value="Navoiy">Navoiy</option>
+                        <option value="Xorazm">Xorazm</option>
+                        <option value="Qashqadaryo">Qashqadaryo</option>
+                        <option value="Surxondaryo">Surxondaryo</option>
+                        <option value="Jizzax">Jizzax</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Testni boshlash</button>
+            </form>
+        </div>
+
+
+        <!-- Test sahifasi -->
+        <div id="test-page" class="page">
+            <div class="test-header">
+                <h2>Psixologik Test</h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <span id="progress-text">1/30</span>
+                </div>
+            </div>
+            <div class="question-container">
+                <h3 id="question-text">Savol matni...</h3>
+                <div class="options-container" id="options-container">
+                    <!-- Variantlar shu yerda yuklanadi -->
+                </div>
+            </div>
+            <div class="test-navigation">
+                <button id="prev-btn" class="btn-secondary" disabled><i class="fas fa-arrow-left"></i> Oldingi</button>
+                <button id="next-btn" class="btn-primary">Keyingi <i class="fas fa-arrow-right"></i></button>
+                <button id="submit-btn" class="btn-submit">Natijani ko'rish</button>
+            </div>
+        </div>
+
+        <!-- Natijalar sahifasi -->
+        <div id="results-page" class="page">
+            <div class="results-header">
+                <i class="fas fa-chart-pie"></i>
+                <h2>Test natijalari</h2>
+            </div>
+            <div class="user-info-card">
+                <h4 id="result-user-name"></h4>
+                <div class="user-details">
+                    <span id="result-user-age"></span>
+                    <span id="result-user-gender"></span>
+                    <span id="result-user-region"></span>
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="result-card">
+                    <h4>A tipi</h4>
+                    <div class="result-bar">
+                        <div class="bar-fill" id="a-bar"></div>
+                    </div>
+                    <span id="a-percent" class="percent-value">0%</span>
+                    <p id="a-description" class="result-description"></p>
+                </div>
+                <div class="result-card">
+                    <h4>B tipi</h4>
+                    <div class="result-bar">
+                        <div class="bar-fill" id="b-bar"></div>
+                    </div>
+                    <span id="b-percent" class="percent-value">0%</span>
+                    <p id="b-description" class="result-description"></p>
+                </div>
+                <div class="result-card">
+                    <h4>C tipi</h4>
+                    <div class="result-bar">
+                        <div class="bar-fill" id="c-bar"></div>
+                    </div>
+                    <span id="c-percent" class="percent-value">0%</span>
+                    <p id="c-description" class="result-description"></p>
+                </div>
+            </div>
+            <div class="result-summary">
+                <h4>Umumiy xulosa</h4>
+                <p id="result-summary"></p>
+            </div>
+            <button id="restart-btn" class="btn-primary">Qayta boshlash</button>
+        </div>
+
+        <!-- Admin kirish sahifasi -->
+        <div id="admin-login-page" class="page">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <h1>Admin Panel</h1>
+            </div>
+            <form id="admin-form">
+                <div class="form-group">
+                    <label for="admin-username">Foydalanuvchi nomi</label>
+                    <input type="text" id="admin-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Parol</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn-primary">Kirish</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Admin paneli (asosiy sahifada yashirin) -->
+    <div id="admin-panel" class="admin-panel">
+        <div class="admin-header">
+            <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+            <button id="logout-btn" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Chiqish</button>
+        </div>
+        <div class="admin-content">
+            <div class="admin-sidebar">
+                <button class="admin-menu-btn active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Boshqaruv</button>
+                <button class="admin-menu-btn" data-section="users"><i class="fas fa-users"></i> Foydalanuvchilar</button>
+                <button class="admin-menu-btn" data-section="results"><i class="fas fa-poll"></i> Natijalar</button>
+                <button class="admin-menu-btn" data-section="statistics"><i class="fas fa-chart-bar"></i> Statistika</button>
+                <button class="admin-menu-btn" data-section="export"><i class="fas fa-file-export"></i> Eksport</button>
+            </div>
+            <div class="admin-main">
+                <div id="dashboard-section" class="admin-section active">
+                    <h3><i class="fas fa-tachometer-alt"></i> Boshqaruv paneli</h3>
+                    <div class="admin-stats">
+                        <div class="admin-stat-card">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h4>Foydalanuvchilar</h4>
+                                <span id="total-users-count">0</span>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <i class="fas fa-poll"></i>
+                            <div>
+                                <h4>Testlar</h4>
+                                <span id="total-tests-count">0</span>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <div>
+                                <h4>Hududlar</h4>
+                                <span id="total-regions-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-tests">
+                        <h4>Oxirgi test natijalari</h4>
+                        <div class="table-container">
+                            <table id="recent-results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ism</th>
+                                        <th>Familiya</th>
+                                        <th>Yosh</th>
+                                        <th>Hudud</th>
+                                        <th>A %</th>
+                                        <th>B %</th>
+                                        <th>C %</th>
+                                        <th>Sana</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Ma'lumotlar JS orqali yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="users-section" class="admin-section">
+                    <h3><i class="fas fa-users"></i> Foydalanuvchilar</h3>
+                    <div class="admin-toolbar">
+                        <div class="search-box">
+                            <input type="text" id="user-search" placeholder="Qidirish...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                        <button id="export-users-btn" class="btn-secondary"><i class="fas fa-file-export"></i> Eksport</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ism</th>
+                                    <th>Familiya</th>
+                                    <th>Yosh</th>
+                                    <th>Jinsi</th>
+                                    <th>Hudud</th>
+                                    <th>Testlar</th>
+                                    <th>Oxirgi test</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Ma'lumotlar JS orqali yuklanadi -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="results-section" class="admin-section">
+                    <h3><i class="fas fa-poll"></i> Test natijalari</h3>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="region-filter">Hudud:</label>
+                            <select id="region-filter">
+                                <option value="">Barchasi</option>
+                                <!-- Hududlar JS orqali yuklanadi -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="age-filter">Yosh:</label>
+                            <select id="age-filter">
+                                <option value="">Barchasi</option>
+                                <option value="7-12">7-12</option>
+                                <option value="13-18">13-18</option>
+                                <option value="19-25">19-25</option>
+                            </select>
+                        </div>
+                        <button id="apply-filters-btn" class="btn-primary">Qo'llash</button>
+                        <button id="export-results-btn" class="btn-secondary"><i class="fas fa-file-export"></i> Eksport</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Foydalanuvchi</th>
+                                    <th>Yosh</th>
+                                    <th>Hudud</th>
+                                    <th>A %</th>
+                                    <th>B %</th>
+                                    <th>C %</th>
+                                    <th>Sana</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Ma'lumotlar JS orqali yuklanadi -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div id="statistics-section" class="admin-section">
+                    <h3><i class="fas fa-chart-bar"></i> Statistika</h3>
+                    <div class="stats-tabs">
+                        <button class="stats-tab active" data-tab="regions">Hududlar bo'yicha</button>
+                        <button class="stats-tab" data-tab="ages">Yosh guruhlari</button>
+                        <button class="stats-tab" data-tab="genders">Jinslar</button>
+                    </div>
+                    <div class="stats-content">
+                        <div id="regions-stats" class="stats-tab-content active">
+                            <h4>Hududlar bo'yicha testlar soni</h4>
+                            <div class="chart-container">
+                                <canvas id="regions-chart"></canvas>
+                            </div>
+                        </div>
+                        <div id="ages-stats" class="stats-tab-content">
+                            <h4>Yosh guruhlari bo'yicha natijalar</h4>
+                            <div class="chart-container">
+                                <canvas id="ages-chart"></canvas>
+                            </div>
+                        </div>
+                        <div id="genders-stats" class="stats-tab-content">
+                            <h4>Jinslar bo'yicha natijalar</h4>
+                            <div class="chart-container">
+                                <canvas id="genders-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="export-section" class="admin-section">
+                    <h3><i class="fas fa-file-export"></i> Ma'lumotlarni eksport qilish</h3>
+                    <div class="export-options">
+                        <div class="export-card">
+                            <i class="fas fa-file-csv"></i>
+                            <h4>CSV formatda</h4>
+                            <p>Barcha test natijalarini CSV fayl sifatida yuklab olish</p>
+                            <button id="export-all-csv" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                        <div class="export-card">
+                            <i class="fas fa-file-excel"></i>
+                            <h4>Excel formatda</h4>
+                            <p>Barcha test natijalarini Excel fayl sifatida yuklab olish</p>
+                            <button id="export-all-excel" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                        <div class="export-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <h4>Statistika hisoboti</h4>
+                            <p>Umumiy statistika hisobotini PDF formatda olish</p>
+                            <button id="export-stats-pdf" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin paneliga o'tish tugmasi (faqat test boshlanganida ko'rinadi) -->
+    <button id="admin-access-btn" class="admin-access-btn"><i class="fas fa-lock"></i></button>
+</body>
+</html>
+
+
+                <div id="statistics-section" class="admin-section">
+                    <h3><i class="fas fa-chart-bar"></i> Statistika</h3>
+                    <div class="stats-tabs">
+                        <button class="stats-tab active" data-tab="regions">Hududlar bo'yicha</button>
+                        <button class="stats-tab" data-tab="ages">Yosh guruhlari</button>
+                        <button class="stats-tab" data-tab="genders">Jinslar</button>
+                    </div>
+                    <div class="stats-content">
+                        <div id="regions-stats" class="stats-tab-content active">
+                            <h4>Hududlar bo'yicha testlar soni</h4>
+                            <div class="chart-container">
+                                <canvas id="regions-chart"></canvas>
+                            </div>
+                        </div>
+                        <div id="ages-stats" class="stats-tab-content">
+                            <h4>Yosh guruhlari bo'yicha natijalar</h4>
+                            <div class="chart-container">
+                                <canvas id="ages-chart"></canvas>
+                            </div>
+                        </div>
+                        <div id="genders-stats" class="stats-tab-content">
+                            <h4>Jinslar bo'yicha natijalar</h4>
+                            <div class="chart-container">
+                                <canvas id="genders-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="export-section" class="admin-section">
+                    <h3><i class="fas fa-file-export"></i> Ma'lumotlarni eksport qilish</h3>
+                    <div class="export-options">
+                        <div class="export-card">
+                            <i class="fas fa-file-csv"></i>
+                            <h4>CSV formatda</h4>
+                            <p>Barcha test natijalarini CSV fayl sifatida yuklab olish</p>
+                            <button id="export-all-csv" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                        <div class="export-card">
+                            <i class="fas fa-file-excel"></i>
+                            <h4>Excel formatda</h4>
+                            <p>Barcha test natijalarini Excel fayl sifatida yuklab olish</p>
+                            <button id="export-all-excel" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                        <div class="export-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <h4>Statistika hisoboti</h4>
+                            <p>Umumiy statistika hisobotini PDF formatda olish</p>
+                            <button id="export-stats-pdf" class="btn-primary"><i class="fas fa-download"></i> Yuklab olish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin paneliga o'tish tugmasi (faqat test boshlanganida ko'rinadi) -->
+    <button id="admin-access-btn" class="admin-access-btn"><i class="fas fa-lock"></i></button>
+</body>
+</html>
 
