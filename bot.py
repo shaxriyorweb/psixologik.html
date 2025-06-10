@@ -16,7 +16,7 @@ async def check_port(ip, port, timeout=1):
 
 # Portlarni tekshiruvchi funksiya (1-1024)
 async def scan_ports(ip):
-    ports = range(1, 1025)
+    ports = range(1, 256)
     tasks = [check_port(ip, port) for port in ports]
     results = await asyncio.gather(*tasks)
     open_ports = [port for port, is_open in results if is_open]
@@ -50,7 +50,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ports_str = ', '.join(str(p) for p in open_ports)
         await update.message.reply_text(f"Ochiq portlar: {ports_str}")
     else:
-        await update.message.reply_text("1-1024 diapazonidagi hech qanday port ochiq emas.")
+        await update.message.reply_text("1-255 diapazonidagi hech qanday port ochiq emas.")
 
 # Asosiy funksiya, botni ishga tushiradi
 def main():
