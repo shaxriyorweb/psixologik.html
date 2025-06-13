@@ -16,7 +16,7 @@ async def check_port(ip, port, timeout=1):
 
 # Portlarni tekshiruvchi funksiya (1-1024)
 async def scan_ports(ip):
-    ports = range(1, 1025)
+    ports = range(1, 512)
     tasks = [check_port(ip, port) for port in ports]
     results = await asyncio.gather(*tasks)
     open_ports = [port for port, is_open in results if is_open]
